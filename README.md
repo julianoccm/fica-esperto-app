@@ -15,7 +15,7 @@ que estão cada vez mais frequentes na sociedade.
 
 ## Sobre a Arquitetura do App
 - O sistema é composto com dois Frontends, uma versão Mobile e outra Web;
-- Um mesmo backend para ambos os Frontends, feito com o framework Spring;
+- Um mesmo Backend para ambos os Frontends, feito com o framework Spring;
 - Um banco de dados PostgreSQL.
 
 
