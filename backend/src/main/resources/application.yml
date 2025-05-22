@@ -2,5 +2,9 @@ spring:
   application:
     name: backend
 
+security:
+  jwt:
+    key: 37E6A2D46FF8C566756E25EA5B4FD37E6A2D46FF8C566756E25EA5B4FD
+
 server:
   port: 8080

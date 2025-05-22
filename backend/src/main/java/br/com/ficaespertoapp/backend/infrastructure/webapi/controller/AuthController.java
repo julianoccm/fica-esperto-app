@@ -1,9 +1,10 @@
-package br.com.ficaespertoapp.backend.infrastructure.webapi;
+package br.com.ficaespertoapp.backend.infrastructure.webapi.controller;
 
 
 import br.com.ficaespertoapp.backend.domain.dto.LoginDTO;
 import br.com.ficaespertoapp.backend.domain.exception.AuthenticationException;
 import br.com.ficaespertoapp.backend.infrastructure.security.jwt.JwtTokenGenerator;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDTO loginRequest) {
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginRequest) {
         if ("user".equals(loginRequest.getUsername()) && "password".equals(loginRequest.getPassword())) {
-            return jwtTokenGenerator.generateToken(loginRequest.getUsername());
+            return ResponseEntity.ok(jwtTokenGenerator.generateToken(loginRequest.getUsername()));
         }
 
         throw new AuthenticationException("Unble to authenticate, invalid credentials.");
