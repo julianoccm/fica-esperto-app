@@ -1,8 +1,9 @@
-package br.com.ficaespertoapp.backend.infrastructure.security.jwt;
+package br.com.ficaespertoapp.backend.web.security.jwt;
 
+import br.com.ficaespertoapp.backend.domain.service.UserService;
+import br.com.ficaespertoapp.backend.infrastructure.persistence.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,9 +17,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenGenerator jwtTokenService;
+    private final UserService userService;
 
-    public JwtAuthenticationFilter(JwtTokenGenerator jwtTokenService) {
+    public JwtAuthenticationFilter(JwtTokenGenerator jwtTokenService, UserService userService) {
         this.jwtTokenService = jwtTokenService;
+        this.userService = userService;
     }
 
     @Override
@@ -30,10 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtTokenService.getUsernameFromToken(token);
 
             if (username != null) {
-                //TODO SEARCH DATABASE
+                User databaseUser = userService.findByEmail(username);
 
                 SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>())
+                        new UsernamePasswordAuthenticationToken(databaseUser.getEmail(), null, new ArrayList<>())
                 );
             }
         }

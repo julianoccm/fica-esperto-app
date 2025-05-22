@@ -1,4 +1,4 @@
-package br.com.ficaespertoapp.backend.infrastructure.security.jwt;
+package br.com.ficaespertoapp.backend.web.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

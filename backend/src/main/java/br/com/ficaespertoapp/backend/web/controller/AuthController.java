@@ -1,9 +1,10 @@
-package br.com.ficaespertoapp.backend.infrastructure.webapi.controller;
+package br.com.ficaespertoapp.backend.web.controller;
 
 
 import br.com.ficaespertoapp.backend.domain.dto.LoginDTO;
 import br.com.ficaespertoapp.backend.domain.exception.AuthenticationException;
-import br.com.ficaespertoapp.backend.infrastructure.security.jwt.JwtTokenGenerator;
+import br.com.ficaespertoapp.backend.domain.service.UserService;
+import br.com.ficaespertoapp.backend.web.security.jwt.JwtTokenGenerator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,17 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final JwtTokenGenerator jwtTokenGenerator;
+    private final UserService userService;
 
-    public AuthController(JwtTokenGenerator jwtTokenGenerator) {
+    public AuthController(JwtTokenGenerator jwtTokenGenerator, UserService userService) {
         this.jwtTokenGenerator = jwtTokenGenerator;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO loginRequest) {
-        if ("user".equals(loginRequest.getUsername()) && "password".equals(loginRequest.getPassword())) {
-            return ResponseEntity.ok(jwtTokenGenerator.generateToken(loginRequest.getUsername()));
+        try {
+            userService.verifyAuthentication(loginRequest.getEmail(), loginRequest.getPassword());
+            return ResponseEntity.ok(jwtTokenGenerator.generateToken(loginRequest.getEmail()));
+        } catch (Exception exception) {
+            throw new AuthenticationException("Unble to authenticate, invalid credentials. " + exception.getMessage());
         }
-
-        throw new AuthenticationException("Unble to authenticate, invalid credentials.");
     }
 }

@@ -1,7 +1,7 @@
-package br.com.ficaespertoapp.backend.infrastructure.security.config;
+package br.com.ficaespertoapp.backend.web.security.config;
 
 
-import br.com.ficaespertoapp.backend.infrastructure.security.jwt.JwtAuthenticationFilter;
+import br.com.ficaespertoapp.backend.web.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;

@@ -1,6 +1,14 @@
 spring:
   application:
     name: backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ficaespertoapp
+    username: ficaespertoapp
+    password: ficaespertoapp
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 security:
   jwt:
