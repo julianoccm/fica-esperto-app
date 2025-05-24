@@ -29,7 +29,7 @@ public class AuthController {
             userService.verifyAuthentication(loginRequest.getEmail(), loginRequest.getPassword());
             return ResponseEntity.ok(jwtTokenGenerator.generateToken(loginRequest.getEmail()));
         } catch (Exception exception) {
-            throw new AuthenticationException("Unble to authenticate, invalid credentials. " + exception.getMessage());
+            throw new AuthenticationException("Unable to authenticate, invalid credentials. " + exception.getMessage());
         }
     }
 }

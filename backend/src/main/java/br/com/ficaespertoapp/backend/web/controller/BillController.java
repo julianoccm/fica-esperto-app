@@ -2,7 +2,6 @@ package br.com.ficaespertoapp.backend.web.controller;
 
 import br.com.ficaespertoapp.backend.domain.dto.BillDTO;
 import br.com.ficaespertoapp.backend.domain.service.BillService;
-import br.com.ficaespertoapp.backend.infrastructure.persistence.entity.Bill;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
