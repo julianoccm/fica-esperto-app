@@ -8,6 +8,10 @@
   <img src="https://img.shields.io/badge/PostgreSQL-000?style=for-the-badge&logo=postgresql" />
 </p>
 
+## Alunos
+- Juliano Colere Ceccon Moreira - RA 172412391 - julianocolerecmoreira@gmail.com 
+- Ramon marinho - RA 172320117 - ramonmarinhoot.i@gmail.com 
+
 ## Sobre o App
 FicaEsperto é um aplicativo desenvolvido durante a A3 da matéria de Sistemas Distribuídos e Mobile da UniCuritiba em conjunto com o Banco Bradesco. 
 No qual seu objetivo é ser uma fonte de informações para que as pessoas possam consultar, proteger e se conscientizar sobre os famosos "Golpes Digitais" 
