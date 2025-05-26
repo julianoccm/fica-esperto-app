@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface UserService {
     User verifyAuthentication(String email, String password);
     Optional<User> findByEmail(String email);
+    Optional<User> findById(Long id);
     User save(User user);
     User saveDto(UserDTO user);
 }
