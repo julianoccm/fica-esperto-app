@@ -43,13 +43,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveDto(UserDTO user) {
-        User newUser = new User();
-        newUser.setName(user.getName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setCpf(user.getCpf());
+        User entity = new User();
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
+        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        entity.setCpf(user.getCpf());
 
-        return save(newUser);
+        return save(entity);
     }
 
     @Override
