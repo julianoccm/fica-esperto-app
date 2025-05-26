@@ -1,7 +1,7 @@
 package br.com.ficaespertoapp.backend.web.controller;
 
-import br.com.ficaespertoapp.backend.domain.dto.BillDTO;
 import br.com.ficaespertoapp.backend.domain.service.BillService;
+import br.com.ficaespertoapp.backend.infrastructure.persistence.entity.Bill;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +20,9 @@ public class BillController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<BillDTO>> getBillByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<Bill>> getBillByUserId(@PathVariable Long userId) {
         try {
-            List<BillDTO> bills = billService.findAllBillsByUserId(userId);
+            List<Bill> bills = billService.findAllBillsByUserId(userId);
             return ResponseEntity.ok(bills);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);

@@ -1,5 +1,6 @@
 package br.com.ficaespertoapp.backend.web.security.jwt;
 
+import br.com.ficaespertoapp.backend.domain.exception.UserException;
 import br.com.ficaespertoapp.backend.domain.service.UserService;
 import br.com.ficaespertoapp.backend.infrastructure.persistence.entity.User;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -33,10 +35,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtTokenService.getUsernameFromToken(token);
 
             if (username != null) {
-                User databaseUser = userService.findByEmail(username);
+                Optional<User> optinalUser = userService.findByEmail(username);
+
+                if (optinalUser.isEmpty()) {
+                    throw new UserException(String.format("Invalid token for user %s", username));
+                }
 
                 SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(databaseUser.getEmail(), null, new ArrayList<>())
+                        new UsernamePasswordAuthenticationToken(optinalUser.get().getEmail(), null, new ArrayList<>())
                 );
             }
         }
