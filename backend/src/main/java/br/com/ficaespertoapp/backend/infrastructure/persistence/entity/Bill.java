@@ -50,15 +50,4 @@ public class Bill {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    public BillDTO toDTO() {
-        BillDTO billDTO = new BillDTO();
-        billDTO.setId(this.id);
-        billDTO.setDescription(this.description);
-        billDTO.setAmount(this.value);
-        billDTO.setDueDate(this.dueDate.toString());
-        billDTO.setStatus(this.status.name());
-        billDTO.setUserId(this.user.getId());
-        return billDTO;
-    }
 }
