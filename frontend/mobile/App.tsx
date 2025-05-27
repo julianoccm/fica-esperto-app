@@ -2,9 +2,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnboardingScreen from "./src/screens/Onboarding";
 import { createStaticNavigation } from "@react-navigation/native";
 import LoginScreen from "./src/screens/Login";
+import RegisterScreen from "./src/screens/Register";
+import HomeScreen from "./src/screens/Home";
 
 const NavigationStack = createNativeStackNavigator({
-  initialRouteName: "Onboarding",
+  initialRouteName: "Login",
   screens: {
     Onboarding: {
       screen: OnboardingScreen,
@@ -14,6 +16,18 @@ const NavigationStack = createNativeStackNavigator({
     },
     Login: {
       screen: LoginScreen,
+      options: {
+        headerShown: false,
+      }, 
+    },
+    Register: {
+      screen: RegisterScreen,
+      options: {
+        headerShown: false,
+      }, 
+    },
+    Home: {
+      screen: HomeScreen,
       options: {
         headerShown: false,
       }, 

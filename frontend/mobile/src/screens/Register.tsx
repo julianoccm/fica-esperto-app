@@ -8,38 +8,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
-import { useState } from "react";
-import AuthService from "../services/auth-service";
-import type { Login } from "../models/login";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
   const _goToRegister = () => {
-    navigation.navigate("Register");
+    navigation.navigate("Login");
   };
 
-  const _login = () => {
-    AuthService.login({ email, password } as Login)
-      .then((token) => {
-        console.log("Token received:", token);
-        AsyncStorage.setItem("token", token)
-          .then(() => {
-            navigation.navigate("Home");
-          })
-          .catch((err) => {
-            setErrorMessage("Erro ao salvar o token.");
-          });
-      })
-      .catch((error) => {
-        setErrorMessage(error.response.data);
-      });
-  };
+  const _login = () => {};
 
   return (
     <>
@@ -53,10 +30,8 @@ export default function LoginScreen() {
       <View style={styles.formsContainer}>
         <TextInput
           style={styles.textInput}
-          autoCapitalize="none"
           placeholder="Insira aqui seu email"
           keyboardType="email-address"
-          onChange={(e) => setEmail(e.nativeEvent.text)}
           onFocus={(e) =>
             e.target.setNativeProps({ style: styles.formInputFucused })
           }
@@ -67,8 +42,6 @@ export default function LoginScreen() {
         <TextInput
           style={styles.textInput}
           placeholder="Insira aqui sua senha"
-          autoCapitalize="none"
-          onChange={(e) => setPassword(e.nativeEvent.text)}
           onFocus={(e) =>
             e.target.setNativeProps({ style: styles.formInputFucused })
           }
@@ -76,7 +49,6 @@ export default function LoginScreen() {
             e.target.setNativeProps({ style: styles.formInputUnfocused })
           }
           secureTextEntry
-          
         />
 
         <TouchableOpacity style={styles.buttonForm} onPress={_login}>
@@ -88,14 +60,11 @@ export default function LoginScreen() {
           onPress={_goToRegister}
         >
           <Text style={styles.buttonNavigationTex}>
-            Não tem uma conta? Cadastre-se
+            Já tem uma conta? Acesse
           </Text>
         </TouchableOpacity>
-
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
       </View>
-      <View style={styles.background}>
-      </View>
+      <View style={styles.background}></View>
     </>
   );
 }
@@ -155,10 +124,8 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1.5,
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center",
     backgroundColor: "#F6F8FA",
   },
   formInputFucused: {
@@ -169,10 +136,4 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
   },
-  errorMessage: {
-    color: "red",
-    fontWeight: "500",
-    textAlign: "center",
-    marginTop: 30,
-  }
 });
