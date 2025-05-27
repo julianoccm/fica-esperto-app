@@ -1,5 +1,7 @@
+import { useNavigation, type NavigationProp } from "@react-navigation/native";
 import { StyleSheet, View, Text, Image } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
+import type { NavigationStackParamList } from "../config/navigation-stack-param";
 
 const slides = [
   {
@@ -26,6 +28,8 @@ const slides = [
 ];
 
 export default function OnboardingScreen() {
+  const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
+
   const _renderItem = ({ item }: { item: (typeof slides)[0] }) => {
     return (
       <View style={styles.itemContainer}>
@@ -53,11 +57,12 @@ export default function OnboardingScreen() {
   };
 
   const _onDone = () => {
-    console.log("Done button pressed");
+    navigation.navigate("Login");
   };
 
   return (
     <AppIntroSlider
+      style={styles.container}
       renderItem={_renderItem}
       data={slides}
       onDone={_onDone}
@@ -70,6 +75,10 @@ export default function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   sliderButtonText: {
     fontWeight: "600",
     color: "#000",
