@@ -36,6 +36,9 @@ public class User {
     @Column(nullable = false)
     private String cpf;
 
+    @Column(nullable = false)
+    private String birthDate;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bill> bills;
 }

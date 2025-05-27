@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         entity.setEmail(user.getEmail());
         entity.setPassword(passwordEncoder.encode(user.getPassword()));
         entity.setCpf(user.getCpf());
+        entity.setBirthDate(user.getBirthDate());
 
         return save(entity);
     }
