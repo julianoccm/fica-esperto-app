@@ -14,14 +14,14 @@ const slides = [
   {
     key: 2,
     title: "Finanças",
-    text: "Controle suas finanças e fique esperto contra os principais golpes financeiros.",
+    text: "Com o FicaEsperto controla suas pendencias financeiras e fica esperto para não negativar seu nome.",
     image: require("../../assets/2.png"),
     backgroundColor: "#febe29",
   },
   {
     key: 3,
     title: "Economia",
-    text: "Veja onde estão os seus principais gastos e como economizar.",
+    text: "Com o FicaEsperto voce pode ver onde estão os seus principais gastos e como economizar.",
     image: require("../../assets/3.png"),
     backgroundColor: "#22bcb5",
   },
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   sliderButtonText: {
     fontWeight: "600",
     color: "#000",
+    fontSize: 18,
     paddingRight: 30,
   },
   itemContainer: {
@@ -90,23 +91,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemTitle: {
-    fontSize: 22,
+    fontSize: 30,
     fontWeight: "bold",
     color: "#000",
     textAlign: "center",
     marginTop: 20,
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 20,
     color: "#000",
+    fontWeight: "300",
     textAlign: "center",
     marginHorizontal: 20,
     marginBottom: 100,
     marginTop: 10,
   },
   itemImage: {
-    width: 300,
-    height: 300,
+    height: "30%",
     resizeMode: "contain",
     alignSelf: "center",
     marginTop: 20,
