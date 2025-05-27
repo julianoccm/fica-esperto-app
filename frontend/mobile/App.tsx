@@ -31,6 +31,7 @@ const NavigationStack = createNativeStackNavigator({
       screen: HomeScreen,
       options: {
         headerShown: false,
+        gestureEnabled: false,
       }, 
     },
     AuthControl: {

@@ -11,7 +11,6 @@ export default function HomeScreen() {
   const [data, setData] = useState<UserData>();
 
   useEffect(() => {
-    console.log("Fetching user data...");
     UserService.getUserDataById(3)
       .then((userData) => {
         setData(userData);
