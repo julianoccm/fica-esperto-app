@@ -33,7 +33,7 @@ export default function LoginScreen() {
             navigation.navigate("Home");
           })
           .catch((err) => {
-            setErrorMessage("Erro ao salvar o token.");
+            setErrorMessage("Erro ao salvar o token. " + err.message);
           });
       })
       .catch((error) => {
@@ -76,7 +76,6 @@ export default function LoginScreen() {
             e.target.setNativeProps({ style: styles.formInputUnfocused })
           }
           secureTextEntry
-          
         />
 
         <TouchableOpacity style={styles.buttonForm} onPress={_login}>
@@ -94,8 +93,7 @@ export default function LoginScreen() {
 
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       </View>
-      <View style={styles.background}>
-      </View>
+      <View style={styles.background}></View>
     </>
   );
 }
@@ -174,5 +172,5 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
     marginTop: 30,
-  }
+  },
 });

@@ -1,4 +1,5 @@
 export class User {
+  id?: number
   name?: string;
   email?: string;
   password?: string;
@@ -10,6 +11,7 @@ export class User {
 
   static fromJson(json: any): User {
     return new User({
+      id: json.id,
       name: json.name,
       email: json.email,
       password: json.password,
@@ -19,6 +21,7 @@ export class User {
 
   toJson(): any {
     return {
+      id: this.id,
       name: this.name,
       email: this.email,
       password: this.password,

@@ -12,6 +12,7 @@ import { useState } from "react";
 import AuthService from "../services/auth-service";
 import type { Login } from "../models/login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import type { User } from "../models/user";
 
 export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -27,7 +28,30 @@ export default function RegisterScreen() {
   };
 
   const _register = () => {
-    
+    AuthService.register({
+      name,
+      cpf,
+      email,
+      password,
+    } as User)
+      .then((user) => {
+        AuthService.login({ email, password } as Login)
+          .then((token) => {
+            AsyncStorage.setItem("token", token)
+              .then(() => {
+                navigation.navigate("Home");
+              })
+              .catch((err) => {
+                setErrorMessage("Erro ao salvar o token. " + err.message);
+              });
+          })
+          .catch((error) => {
+            setErrorMessage(error.response.data);
+          });
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data);
+      });
   };
 
   return (
@@ -40,7 +64,7 @@ export default function RegisterScreen() {
         </Text>
       </View>
       <View style={styles.formsContainer}>
-         <TextInput
+        <TextInput
           style={styles.textInput}
           autoCapitalize="none"
           placeholder="Insira aqui seu nome"
@@ -89,17 +113,13 @@ export default function RegisterScreen() {
             e.target.setNativeProps({ style: styles.formInputUnfocused })
           }
           secureTextEntry
-          
         />
 
         <TouchableOpacity style={styles.buttonForm} onPress={_register}>
           <Text style={styles.buttonFormText}>Criar conta</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.buttonNavigation}
-          onPress={_goToLogin}
-        >
+        <TouchableOpacity style={styles.buttonNavigation} onPress={_goToLogin}>
           <Text style={styles.buttonNavigationTex}>
             Já tem uma conta? Acesse
           </Text>
@@ -107,8 +127,7 @@ export default function RegisterScreen() {
 
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       </View>
-      <View style={styles.background}>
-      </View>
+      <View style={styles.background}></View>
     </>
   );
 }
@@ -187,5 +206,5 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
     marginTop: 30,
-  }
+  },
 });

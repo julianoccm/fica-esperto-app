@@ -6,7 +6,7 @@ import RegisterScreen from "./src/screens/Register";
 import HomeScreen from "./src/screens/Home";
 
 const NavigationStack = createNativeStackNavigator({
-  initialRouteName: "Login",
+  initialRouteName: "Register",
   screens: {
     Onboarding: {
       screen: OnboardingScreen,
