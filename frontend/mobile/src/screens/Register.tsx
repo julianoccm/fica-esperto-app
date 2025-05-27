@@ -8,30 +8,68 @@ import {
   TouchableOpacity,
 } from "react-native";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
+import { useState } from "react";
+import AuthService from "../services/auth-service";
+import type { Login } from "../models/login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
 
-  const _goToRegister = () => {
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const _goToLogin = () => {
     navigation.navigate("Login");
   };
 
-  const _login = () => {};
+  const _register = () => {
+    
+  };
 
   return (
     <>
       <View style={styles.containerHeader}>
         <Image source={require("../../assets/security.png")} />
-        <Text style={styles.containerHeaderTitle}>Acesse a sua conta</Text>
+        <Text style={styles.containerHeaderTitle}>Crie a sua conta</Text>
         <Text style={styles.containerHeaderCaption}>
-          Entre seu email e senha para realizar o acesso.
+          Entre seus dados pessoais para criar a sua conta.
         </Text>
       </View>
       <View style={styles.formsContainer}>
+         <TextInput
+          style={styles.textInput}
+          autoCapitalize="none"
+          placeholder="Insira aqui seu nome"
+          onChange={(e) => setName(e.nativeEvent.text)}
+          onFocus={(e) =>
+            e.target.setNativeProps({ style: styles.formInputFucused })
+          }
+          onBlur={(e) =>
+            e.target.setNativeProps({ style: styles.formInputUnfocused })
+          }
+        />
         <TextInput
           style={styles.textInput}
+          autoCapitalize="none"
+          placeholder="Insira aqui seu CPF"
+          onChange={(e) => setCpf(e.nativeEvent.text)}
+          onFocus={(e) =>
+            e.target.setNativeProps({ style: styles.formInputFucused })
+          }
+          onBlur={(e) =>
+            e.target.setNativeProps({ style: styles.formInputUnfocused })
+          }
+        />
+        <TextInput
+          style={styles.textInput}
+          autoCapitalize="none"
           placeholder="Insira aqui seu email"
           keyboardType="email-address"
+          onChange={(e) => setEmail(e.nativeEvent.text)}
           onFocus={(e) =>
             e.target.setNativeProps({ style: styles.formInputFucused })
           }
@@ -42,6 +80,8 @@ export default function RegisterScreen() {
         <TextInput
           style={styles.textInput}
           placeholder="Insira aqui sua senha"
+          autoCapitalize="none"
+          onChange={(e) => setPassword(e.nativeEvent.text)}
           onFocus={(e) =>
             e.target.setNativeProps({ style: styles.formInputFucused })
           }
@@ -49,22 +89,26 @@ export default function RegisterScreen() {
             e.target.setNativeProps({ style: styles.formInputUnfocused })
           }
           secureTextEntry
+          
         />
 
-        <TouchableOpacity style={styles.buttonForm} onPress={_login}>
-          <Text style={styles.buttonFormText}>Entrar</Text>
+        <TouchableOpacity style={styles.buttonForm} onPress={_register}>
+          <Text style={styles.buttonFormText}>Criar conta</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.buttonNavigation}
-          onPress={_goToRegister}
+          onPress={_goToLogin}
         >
           <Text style={styles.buttonNavigationTex}>
             Já tem uma conta? Acesse
           </Text>
         </TouchableOpacity>
+
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
       </View>
-      <View style={styles.background}></View>
+      <View style={styles.background}>
+      </View>
     </>
   );
 }
@@ -124,8 +168,10 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1.5,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
     backgroundColor: "#F6F8FA",
   },
   formInputFucused: {
@@ -136,4 +182,10 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
   },
+  errorMessage: {
+    color: "red",
+    fontWeight: "500",
+    textAlign: "center",
+    marginTop: 30,
+  }
 });
