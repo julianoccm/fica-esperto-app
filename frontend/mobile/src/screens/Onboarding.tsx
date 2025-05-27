@@ -1,0 +1,105 @@
+import { StyleSheet, View, Text, Image } from "react-native";
+import AppIntroSlider from "react-native-app-intro-slider";
+
+const slides = [
+  {
+    key: 1,
+    title: "FicaEsperto",
+    text: "Aplicativo de dicas de como ficar esperto contra os principais golpes aplicados no Brasil.",
+    image: require("../../assets/1.png"),
+    backgroundColor: "#59b2ab",
+  },
+  {
+    key: 2,
+    title: "Finanças",
+    text: "Controle suas finanças e fique esperto contra os principais golpes financeiros.",
+    image: require("../../assets/2.png"),
+    backgroundColor: "#febe29",
+  },
+  {
+    key: 3,
+    title: "Economia",
+    text: "Veja onde estão os seus principais gastos e como economizar.",
+    image: require("../../assets/3.png"),
+    backgroundColor: "#22bcb5",
+  },
+];
+
+export default function OnboardingScreen() {
+  const _renderItem = ({ item }: { item: (typeof slides)[0] }) => {
+    return (
+      <View style={styles.itemContainer}>
+        <Image style={styles.itemImage} source={item.image} />
+        <Text style={styles.itemTitle}>{item.title}</Text>
+        <Text style={styles.itemText}>{item.text}</Text>
+      </View>
+    );
+  };
+
+  const _renderNextButton = () => {
+    return (
+      <View>
+        <Text style={styles.sliderButtonText}>Proximo</Text>
+      </View>
+    );
+  };
+
+  const _renderDoneButton = () => {
+    return (
+      <View>
+        <Text style={styles.sliderButtonText}>Pronto</Text>
+      </View>
+    );
+  };
+
+  const _onDone = () => {
+    console.log("Done button pressed");
+  };
+
+  return (
+    <AppIntroSlider
+      renderItem={_renderItem}
+      data={slides}
+      onDone={_onDone}
+      dotStyle={{ backgroundColor: "#ccc" }}
+      activeDotStyle={{ backgroundColor: "#6c63ff" }}
+      renderNextButton={_renderNextButton}
+      renderDoneButton={_renderDoneButton}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  sliderButtonText: {
+    fontWeight: "600",
+    color: "#000",
+    paddingRight: 30,
+  },
+  itemContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  itemTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
+    marginTop: 20,
+  },
+  itemText: {
+    fontSize: 16,
+    color: "#000",
+    textAlign: "center",
+    marginHorizontal: 20,
+    marginBottom: 100,
+    marginTop: 10,
+  },
+  itemImage: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginTop: 20,
+  },
+});
