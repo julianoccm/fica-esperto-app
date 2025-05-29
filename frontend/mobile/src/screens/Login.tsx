@@ -34,7 +34,7 @@ export default function LoginScreen() {
       console.log("Response received:", authResponse);
 
       await AsyncStorage.setItem("token", authResponse.token!!);
-      await AsyncStorage.setItem("user", authResponse.user?.toJson().toString()!!);
+      await AsyncStorage.setItem("user", JSON.stringify(authResponse.user?.toJson()!!));
 
       navigation.navigate("Home");
     } catch (error: any) {
