@@ -23,8 +23,6 @@ export default class PostService {
 
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    console.log(`/post/v1/category/${category}`)
-
     const response = await api.get<any[]>(`/post/v1/category/${category}`);
     const posts: Post[] = (response.data as any[]).map(postJson => Post.fromJson(postJson));
     return posts;
