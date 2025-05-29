@@ -1,6 +1,7 @@
 package br.com.ficaespertoapp.backend.web.controller;
 
 
+import br.com.ficaespertoapp.backend.domain.dto.AuthResponseDTO;
 import br.com.ficaespertoapp.backend.domain.dto.LoginDTO;
 import br.com.ficaespertoapp.backend.domain.dto.UserDTO;
 import br.com.ficaespertoapp.backend.domain.exception.AuthenticationException;
@@ -26,10 +27,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
         try {
             userService.verifyAuthentication(loginRequest.getEmail(), loginRequest.getPassword());
-            return ResponseEntity.ok(jwtTokenGenerator.generateToken(loginRequest.getEmail()));
+
+            User user = userService.findByEmail(loginRequest.getEmail())
+                    .orElseThrow(() -> new AuthenticationException("User not found."));
+            String token = jwtTokenGenerator.generateToken(user.getEmail());
+
+            AuthResponseDTO responseDTO = new AuthResponseDTO();
+            responseDTO.setToken(token);
+            responseDTO.setUser(user);
+
+            return ResponseEntity.ok(responseDTO);
         } catch (Exception exception) {
             return ResponseEntity.status(500).body("Unable to authenticate, invalid credentials. " + exception.getMessage());
         }
