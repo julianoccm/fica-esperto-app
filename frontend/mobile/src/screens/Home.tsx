@@ -56,6 +56,10 @@ export default function HomeScreen() {
       });
   };
 
+  const _goToSettings = () => {
+    navigation.navigate("Settings");
+  };
+
   useEffect(() => {
     _getPostData();
     _getUserData();
@@ -81,7 +85,7 @@ export default function HomeScreen() {
               Segue as dicas recomendadas para voce!
             </Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={_goToSettings}>
             <MaterialIcons name="settings" size={24} color="black" />
           </TouchableOpacity>
         </View>

@@ -3,4 +3,6 @@ export type NavigationStackParamList = {
   Register: undefined;
   Onboarding: undefined;
   Home: undefined;
+  Settings: undefined;
+  AuthControl: undefined;
 };

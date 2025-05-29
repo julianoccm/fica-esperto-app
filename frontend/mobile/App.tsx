@@ -5,6 +5,7 @@ import LoginScreen from "./src/screens/Login";
 import RegisterScreen from "./src/screens/Register";
 import HomeScreen from "./src/screens/Home";
 import AuthControlScreen from "./src/screens/AuthControl";
+import SettingsScreen from "./src/screens/Settings";
 
 const NavigationStack = createNativeStackNavigator({
   initialRouteName: "AuthControl",
@@ -40,6 +41,12 @@ const NavigationStack = createNativeStackNavigator({
         headerShown: false,
       }, 
     },
+    Settings: {
+      screen: SettingsScreen,
+      options: {
+        headerShown: false,
+      }, 
+    }, 
   },
 });
 
