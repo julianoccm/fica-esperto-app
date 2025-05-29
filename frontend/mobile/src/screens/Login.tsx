@@ -24,21 +24,28 @@ export default function LoginScreen() {
     navigation.navigate("Register");
   };
 
-  const _login = () => {
-    AuthService.login({ email, password } as Login)
-      .then((token) => {
-        console.log("Token received:", token);
-        AsyncStorage.setItem("token", token)
-          .then(() => {
-            navigation.navigate("Home");
-          })
-          .catch((err) => {
-            setErrorMessage("Erro ao salvar o token. " + err.message);
-          });
-      })
-      .catch((error) => {
+  const _login = async () => {
+    try {
+      const authResponse = await AuthService.login({
+        email,
+        password,
+      } as Login);
+
+      console.log("Response received:", authResponse);
+
+      await AsyncStorage.setItem("token", authResponse.token!!);
+      await AsyncStorage.setItem("user", authResponse.user?.toJson().toString()!!);
+
+      navigation.navigate("Home");
+    } catch (error: any) {
+      if (error.isAxiosError) {
+        console.log("Axios error message:", error.response.data);
         setErrorMessage(error.response.data);
-      });
+      } else {
+        console.log(error);
+        setErrorMessage("Ocorreu um erro ao fazer login.");
+      }
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ export class User {
   email?: string;
   password?: string;
   cpf?: string;
+  birthDate?: string;
 
   constructor(init?: Partial<User>) {
     Object.assign(this, init);
@@ -16,6 +17,7 @@ export class User {
       email: json.email,
       password: json.password,
       cpf: json.cpf,
+      birthDate: json.birthDate
     });
   }
 
@@ -26,6 +28,7 @@ export class User {
       email: this.email,
       password: this.password,
       cpf: this.cpf,
+      birthDate: this.birthDate
     };
   }
 }

@@ -6,6 +6,7 @@ export class UserData {
   email?: string;
   password?: string;
   cpf?: string;
+  birthDate?: string;
   bills: Bill[] = [];
 
   constructor(init?: Partial<UserData>) {
@@ -19,6 +20,7 @@ export class UserData {
       email: json.email,
       password: json.password,
       cpf: json.cpf,
+      birthDate: json.birthDate,
       bills: json.bills ? json.bills.map((bill: any) => Bill.fromJson(bill)) : [],
     });
   }
@@ -30,6 +32,7 @@ export class UserData {
       email: this.email,
       password: this.password,
       cpf: this.cpf,
+      birthDate: this.birthDate,
       bills: this.bills.map(bill => bill.toJson()),
     };
   }

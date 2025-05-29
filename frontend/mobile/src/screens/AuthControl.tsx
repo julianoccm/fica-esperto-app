@@ -9,7 +9,9 @@ export default function AuthControlScreen() {
 
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("token");
-    if (token) {
+    const user = await AsyncStorage.getItem("user");
+    
+    if (token && user) {
       navigation.navigate("Home");
     } else {
       navigation.navigate("Onboarding");

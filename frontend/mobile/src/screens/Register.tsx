@@ -21,37 +21,41 @@ export default function RegisterScreen() {
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const _goToLogin = () => {
     navigation.navigate("Login");
   };
 
-  const _register = () => {
-    AuthService.register({
-      name,
-      cpf,
-      email,
-      password,
-    } as User)
-      .then((user) => {
-        AuthService.login({ email, password } as Login)
-          .then((token) => {
-            AsyncStorage.setItem("token", token)
-              .then(() => {
-                navigation.navigate("Home");
-              })
-              .catch((err) => {
-                setErrorMessage("Erro ao salvar o token. " + err.message);
-              });
-          })
-          .catch((error) => {
-            setErrorMessage(error.response.data);
-          });
-      })
-      .catch((error) => {
+  const _register = async () => {
+    try {
+      const registerResponse = await AuthService.register({
+        name,
+        cpf,
+        email,
+        password,
+        birthDate
+      } as User);
+
+      const authResponse = await AuthService.login({
+        email,
+        password,
+      } as Login);
+
+      await AsyncStorage.setItem("token", authResponse.token!!);
+      await AsyncStorage.setItem("user", authResponse.user?.toJson().toString()!!);
+
+      navigation.navigate("Home");
+    } catch (error: any) {
+       if (error.isAxiosError) {
+        console.log("Axios error message:", error.response.data);
         setErrorMessage(error.response.data);
-      });
+      } else {
+        console.log(error);
+        setErrorMessage("Ocorreu um erro ao fazer login.");
+      }
+    }
   };
 
   return (
@@ -113,6 +117,22 @@ export default function RegisterScreen() {
             e.target.setNativeProps({ style: styles.formInputUnfocused })
           }
           secureTextEntry
+        />
+
+        <TextInput
+          style={styles.textInput}
+          placeholder="Insira aqui sua data de nascimento"
+          autoCapitalize="none"
+          value={birthDate}
+          onChangeText={setBirthDate}
+          keyboardType="numeric"
+          onChange={(e) => setPassword(e.nativeEvent.text)}
+          onFocus={(e) =>
+            e.target.setNativeProps({ style: styles.formInputFucused })
+          }
+          onBlur={(e) =>
+            e.target.setNativeProps({ style: styles.formInputUnfocused })
+          }
         />
 
         <TouchableOpacity style={styles.buttonForm} onPress={_register}>
