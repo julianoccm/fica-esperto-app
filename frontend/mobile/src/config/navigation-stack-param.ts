@@ -5,4 +5,5 @@ export type NavigationStackParamList = {
   Home: undefined;
   Settings: undefined;
   AuthControl: undefined;
+  Post: { id: number | undefined };
 };

@@ -19,12 +19,23 @@ export default class PostService {
 
     const user = User.fromJson(JSON.parse(userStorage));
     const category = getAgeGroup(user.birthDate!!)
-    console.log(category)
 
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const response = await api.get<any[]>(`/post/v1/category/${category}`);
     const posts: Post[] = (response.data as any[]).map(postJson => Post.fromJson(postJson));
     return posts;
+  }
+
+   static async getUserPostsById(id: number): Promise<Post> {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found in AsyncStorage");
+    }
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const response = await api.get<any[]>(`/post/v1/${id}`);
+    return Post.fromJson(response.data);
   }
 }

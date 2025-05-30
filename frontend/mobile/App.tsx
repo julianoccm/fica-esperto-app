@@ -6,6 +6,8 @@ import RegisterScreen from "./src/screens/Register";
 import HomeScreen from "./src/screens/Home";
 import AuthControlScreen from "./src/screens/AuthControl";
 import SettingsScreen from "./src/screens/Settings";
+import { Post } from "./src/models/post";
+import PostScreen from "./src/screens/Post";
 
 const NavigationStack = createNativeStackNavigator({
   initialRouteName: "AuthControl",
@@ -47,6 +49,13 @@ const NavigationStack = createNativeStackNavigator({
         headerShown: false,
       }, 
     }, 
+    Post: {
+      screen: PostScreen,
+      initialParams: { id: null }, // Pass default id param
+      options: {
+        headerShown: false
+      }
+    }
   },
 });
 

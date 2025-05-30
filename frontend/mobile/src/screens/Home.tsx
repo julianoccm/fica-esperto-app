@@ -103,7 +103,10 @@ export default function HomeScreen() {
           decelerationRate="fast"
           style={styles.flatList}
           renderItem={({ item }) => (
-            <TouchableOpacity style={[styles.postCard, { width: width * 0.8 }]}>
+            <TouchableOpacity
+              style={[styles.postCard, { width: width * 0.8 }]}
+              onPress={() => navigation.navigate("Post", { id: item.id })}
+            >
               <Text style={styles.postCardTitle}>{item.title}</Text>
               <Text style={styles.postCardDescription}>{item.description}</Text>
             </TouchableOpacity>
