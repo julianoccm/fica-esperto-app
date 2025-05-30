@@ -88,7 +88,7 @@ export default function HomeScreen() {
         <View style={{ height: 20 }} />
         <View style={styles.headerContainer}>
           <View>
-            <Text style={styles.welcomeTitle}>Seja bem vindo {data.name}!</Text>
+            <Text style={styles.welcomeTitle}>Seja bem vindo {data.name?.split(" ")[0]}!</Text>
             <Text style={styles.welcomeSubtitle}>
               Segue as dicas recomendadas para voce!
             </Text>
