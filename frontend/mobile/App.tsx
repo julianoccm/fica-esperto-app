@@ -8,6 +8,7 @@ import AuthControlScreen from "./src/screens/AuthControl";
 import SettingsScreen from "./src/screens/Settings";
 import { Post } from "./src/models/post";
 import PostScreen from "./src/screens/Post";
+import BillsScreen from "./src/screens/Bills";
 
 const NavigationStack = createNativeStackNavigator({
   initialRouteName: "AuthControl",
@@ -22,40 +23,47 @@ const NavigationStack = createNativeStackNavigator({
       screen: LoginScreen,
       options: {
         headerShown: false,
-      }, 
+      },
     },
     Register: {
       screen: RegisterScreen,
       options: {
         headerShown: false,
-      }, 
+      },
     },
     Home: {
       screen: HomeScreen,
       options: {
         headerShown: false,
         gestureEnabled: false,
-      }, 
+      },
     },
     AuthControl: {
       screen: AuthControlScreen,
       options: {
         headerShown: false,
-      }, 
+      },
     },
     Settings: {
       screen: SettingsScreen,
       options: {
         headerShown: false,
-      }, 
-    }, 
+      },
+    },
     Post: {
       screen: PostScreen,
-      initialParams: { id: null }, // Pass default id param
+      initialParams: { id: null },
       options: {
-        headerShown: false
-      }
-    }
+        headerShown: false,
+      },
+    },
+    Bills: {
+      screen: BillsScreen,
+      initialParams: { id: null, type: null },
+      options: {
+        headerShown: false,
+      },
+    },
   },
 });
 

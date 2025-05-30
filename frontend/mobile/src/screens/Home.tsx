@@ -60,6 +60,14 @@ export default function HomeScreen() {
     navigation.navigate("Settings");
   };
 
+  const _goToPendingBill = () => {
+    navigation.navigate("Bills", { id: data?.id, type: "PENDING" });
+  };
+
+  const _goToPaidBill = () => {
+    navigation.navigate("Bills", { id: data?.id, type: "PAID" });
+  };
+
   useEffect(() => {
     _getPostData();
     _getUserData();
@@ -143,7 +151,10 @@ export default function HomeScreen() {
               </TouchableOpacity>
             ))}
 
-          <TouchableOpacity style={styles.endSectionLink} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.endSectionLink}
+            onPress={_goToPendingBill}
+          >
             <Text style={styles.endSectionLinkText}>
               Ver todas as pendências.
             </Text>
@@ -180,7 +191,10 @@ export default function HomeScreen() {
               </TouchableOpacity>
             ))}
 
-          <TouchableOpacity style={styles.endSectionLink} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.endSectionLink}
+            onPress={_goToPaidBill}
+          >
             <Text style={styles.endSectionLinkText}>
               Ver todas as pendências finalizadas.
             </Text>
