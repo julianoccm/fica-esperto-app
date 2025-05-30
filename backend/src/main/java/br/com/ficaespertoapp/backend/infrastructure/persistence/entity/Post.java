@@ -30,7 +30,7 @@ public class Post {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10000)
     private String content;
 
     @Column(nullable = false)
