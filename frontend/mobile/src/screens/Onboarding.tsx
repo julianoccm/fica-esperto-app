@@ -66,8 +66,8 @@ export default function OnboardingScreen() {
       renderItem={_renderItem}
       data={slides}
       onDone={_onDone}
-      dotStyle={{ backgroundColor: "#ccc" }}
-      activeDotStyle={{ backgroundColor: "#6c63ff" }}
+      dotStyle={{ backgroundColor: "#ccc", marginBottom: 50 }}
+      activeDotStyle={{ backgroundColor: "#6c63ff", marginBottom: 50 }}
       renderNextButton={_renderNextButton}
       renderDoneButton={_renderDoneButton}
     />

@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   billOriginManual: {
     alignSelf: "flex-end",
-    fontSize: 10,
+    fontSize: 8,
     backgroundColor: "#f2ecaa",
     borderColor: "#b5a707",
     borderWidth: 2,
