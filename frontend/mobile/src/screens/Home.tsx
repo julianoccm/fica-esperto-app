@@ -1,6 +1,5 @@
 import { useNavigation, type NavigationProp } from "@react-navigation/native";
 import {
-  ActivityIndicator,
   Dimensions,
   FlatList,
   StyleSheet,
@@ -15,9 +14,13 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import type { Post } from "../models/post";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
 import { UserData } from "../models/user-data";
-import { formatDate } from "../utils/date-utils";
 import UserService from "../services/user-service";
 import PostService from "../services/post-service";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { User } from "../models/user";
+import BillCard from "../components/bill-card";
+import PostCard from "../components/post-card";
+import LoadingComponent from "../components/loading-component";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -47,13 +50,32 @@ export default function HomeScreen() {
       });
   };
 
-  const _getUserData = () => {
-    UserService.getUserDataById(1)
+  const _getUserData = async () => {
+    const userStorage = await AsyncStorage.getItem("user");
+    if (!userStorage) {
+      throw new Error("No user found in AsyncStorage");
+    }
+
+    const user = User.fromJson(JSON.parse(userStorage));
+
+    UserService.getUserDataById(user.id!!)
       .then((userData) => setData(userData))
       .catch((error) => {
         console.error("Error fetching user data:", error);
         _handlerError(error);
       });
+  };
+
+  const _filterBills = (
+    status: string,
+    rangeInitial: number,
+    rangeFinal: number
+  ) => {
+    return data!!.bills
+      .slice()
+      .sort((a, b) => b.id!! - a.id!!)
+      .filter((a) => a.status == status)
+      .slice(rangeInitial, rangeFinal);
   };
 
   const _goToSettings = () => {
@@ -74,12 +96,7 @@ export default function HomeScreen() {
   }, [navigation]);
 
   if (data == null || posts == null) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      </View>
-    );
+    return <LoadingComponent errorMessage={errorMessage} />;
   }
 
   return (
@@ -88,7 +105,9 @@ export default function HomeScreen() {
         <View style={{ height: 20 }} />
         <View style={styles.headerContainer}>
           <View>
-            <Text style={styles.welcomeTitle}>Seja bem vindo {data.name?.split(" ")[0]}!</Text>
+            <Text style={styles.welcomeTitle}>
+              Seja bem vindo {data.name?.split(" ")[0]}!
+            </Text>
             <Text style={styles.welcomeSubtitle}>
               Segue as dicas recomendadas para voce!
             </Text>
@@ -110,46 +129,15 @@ export default function HomeScreen() {
           )}
           decelerationRate="fast"
           style={styles.flatList}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={[styles.postCard, { width: width * 0.8 }]}
-              onPress={() => navigation.navigate("Post", { id: item.id })}
-            >
-              <Text style={styles.postCardTitle}>{item.title}</Text>
-              <Text style={styles.postCardDescription}>{item.description}</Text>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => <PostCard post={item} key={item.id} />}
         />
 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Minhas pendências financeiras</Text>
 
-          {data.bills
-            .slice()
-            .sort((a, b) => b.id!! - a.id!!)
-            .filter((a) => a.status == "PENDING")
-            .slice(0, 3)
-            .map((bill) => (
-              <TouchableOpacity key={bill.id} style={styles.billCard}>
-                <MaterialIcons
-                  name="attach-money"
-                  size={30}
-                  color="white"
-                  style={styles.billIconPending}
-                />
-
-                <View style={styles.billInfo}>
-                  <Text style={styles.billDate}>
-                    {formatDate(bill.dueDate)}
-                  </Text>
-                  <Text style={styles.billName}>{bill.name}</Text>
-                </View>
-
-                <Text style={styles.billValue}>
-                  R$ {bill.value?.toFixed(2)}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          {_filterBills("PENDING", 0, 3).map((bill) => (
+            <BillCard bill={bill} key={bill.id} />
+          ))}
 
           <TouchableOpacity
             style={styles.endSectionLink}
@@ -164,32 +152,9 @@ export default function HomeScreen() {
             Pendências finalizadas
           </Text>
 
-          {data.bills
-            .slice()
-            .sort((a, b) => b.id!! - a.id!!)
-            .filter((a) => a.status == "PAID")
-            .slice(0, 3)
-            .map((bill) => (
-              <TouchableOpacity key={bill.id} style={styles.billCard}>
-                <MaterialIcons
-                  name="attach-money"
-                  size={30}
-                  color="white"
-                  style={styles.billIconPaid}
-                />
-
-                <View style={styles.billInfo}>
-                  <Text style={styles.billDate}>
-                    {formatDate(bill.dueDate)}
-                  </Text>
-                  <Text style={styles.billName}>{bill.name}</Text>
-                </View>
-
-                <Text style={styles.billValue}>
-                  R$ {bill.value?.toFixed(2)}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          {_filterBills("PAID", 0, 3).map((bill) => (
+            <BillCard bill={bill} key={bill.id} />
+          ))}
 
           <TouchableOpacity
             style={styles.endSectionLink}
@@ -200,17 +165,15 @@ export default function HomeScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{ height: 40 }} />
+        <View style={styles.spacer} />
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  spacer: {
+    height: 40,
   },
   container: {
     backgroundColor: "#F6F8FA",
@@ -238,26 +201,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: "center",
   },
-  postCard: {
-    backgroundColor: "#FFF",
-    height: 200,
-    marginHorizontal: 10,
-    borderRadius: 12,
-    overflow: "hidden",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-  },
-  postCardTitle: {
-    color: "#000",
-    fontWeight: "bold",
-    fontSize: 18,
-    paddingBottom: 10,
-  },
-  postCardDescription: {
-    color: "#000",
-    fontSize: 14,
-  },
   sectionContainer: {
     flex: 2,
     width: "100%",
@@ -272,53 +215,6 @@ const styles = StyleSheet.create({
   sectionTitleMarginTop: {
     marginTop: 30,
   },
-  billCard: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    backgroundColor: "#fff",
-    marginVertical: 5,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  billIconPending: {
-    alignSelf: "center",
-    backgroundColor: "#f04646",
-    padding: 6,
-    borderRadius: 100,
-  },
-  billIconPaid: {
-    alignSelf: "center",
-    backgroundColor: "#23b065",
-    padding: 6,
-    borderRadius: 100,
-  },
-  billInfo: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    paddingLeft: 20,
-  },
-  billDate: {
-    fontSize: 14,
-    color: "#8f8d8d",
-    fontWeight: "500",
-  },
-  billName: {
-    fontSize: 16,
-    color: "#4a4a4a",
-    fontWeight: "500",
-  },
-  billValue: {
-    alignSelf: "center",
-    fontSize: 15,
-    color: "#8f8d8d",
-    fontWeight: "500",
-    paddingRight: 5,
-  },
   endSectionLink: {
     alignItems: "center",
     marginTop: 10,
@@ -327,11 +223,6 @@ const styles = StyleSheet.create({
     color: "#3f36cf",
     fontSize: 14,
     fontWeight: "bold",
-  },
-  errorMessage: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 20,
   },
   headerContainer: {
     display: "flex",

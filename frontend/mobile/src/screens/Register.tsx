@@ -107,6 +107,20 @@ export default function RegisterScreen() {
         />
         <TextInput
           style={styles.textInput}
+          placeholder="Insira aqui sua data de nascimento"
+          autoCapitalize="none"
+          value={birthDate}
+          onChangeText={setBirthDate}
+          onChange={(e) => setPassword(e.nativeEvent.text)}
+          onFocus={(e) =>
+            e.target.setNativeProps({ style: styles.formInputFucused })
+          }
+          onBlur={(e) =>
+            e.target.setNativeProps({ style: styles.formInputUnfocused })
+          }
+        />
+        <TextInput
+          style={styles.textInput}
           placeholder="Insira aqui sua senha"
           autoCapitalize="none"
           onChange={(e) => setPassword(e.nativeEvent.text)}
@@ -117,22 +131,6 @@ export default function RegisterScreen() {
             e.target.setNativeProps({ style: styles.formInputUnfocused })
           }
           secureTextEntry
-        />
-
-        <TextInput
-          style={styles.textInput}
-          placeholder="Insira aqui sua data de nascimento"
-          autoCapitalize="none"
-          value={birthDate}
-          onChangeText={setBirthDate}
-          keyboardType="numeric"
-          onChange={(e) => setPassword(e.nativeEvent.text)}
-          onFocus={(e) =>
-            e.target.setNativeProps({ style: styles.formInputFucused })
-          }
-          onBlur={(e) =>
-            e.target.setNativeProps({ style: styles.formInputUnfocused })
-          }
         />
 
         <TouchableOpacity style={styles.buttonForm} onPress={_register}>

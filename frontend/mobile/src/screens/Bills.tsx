@@ -1,21 +1,15 @@
 import { useNavigation, type NavigationProp } from "@react-navigation/native";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import PostService from "../services/post-service";
+
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
-import { Post } from "../models/post";
 import type { UserData } from "../models/user-data";
 import UserService from "../services/user-service";
-import { MaterialIcons } from "@expo/vector-icons";
-import { formatDate } from "../utils/date-utils";
+import { User } from "../models/user";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import PageHeader from "../components/page-header";
+import LoadingComponent from "../components/loading-component";
+import BillCard from "../components/bill-card";
 
 export default function BillsScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -28,10 +22,6 @@ export default function BillsScreen() {
   const [data, setData] = useState<UserData>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const _goBack = () => {
-    navigation.goBack();
-  };
-
   const _handlerError = (error: any) => {
     if (error.isAxiosError) {
       console.log("Axios error message:", error.response.data);
@@ -42,8 +32,15 @@ export default function BillsScreen() {
     }
   };
 
-  const _getUserData = () => {
-    UserService.getUserDataById(1)
+  const _getUserData = async () => {
+    const userStorage = await AsyncStorage.getItem("user");
+    if (!userStorage) {
+      throw new Error("No user found in AsyncStorage");
+    }
+
+    const user = User.fromJson(JSON.parse(userStorage));
+
+    UserService.getUserDataById(user.id!!)
       .then((userData) => setData(userData))
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -51,133 +48,56 @@ export default function BillsScreen() {
       });
   };
 
+  const _filterBills = (status: string) => {
+    return data!!.bills
+      .slice()
+      .sort((a, b) => b.id!! - a.id!!)
+      .filter((a) => a.status == status);
+  };
+
+  const _getTitle = () => {
+    return type == "PAID"
+      ? "Pendências finalizadas"
+      : "Minhas pendências financeiras";
+  };
+
   useEffect(() => {
     _getUserData();
   }, [navigation]);
 
   if (id == null || data == null) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      </View>
-    );
+    return <LoadingComponent errorMessage={errorMessage} />;
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={{ height: 80 }} />
+    <View style={styles.container}>
+      <View style={styles.spacer} />
 
-      <TouchableOpacity
-        style={{ alignSelf: "flex-start", marginBottom: 30 }}
-        onPress={_goBack}
-      >
-        <Ionicons name="chevron-back" size={24} color="black" />
-      </TouchableOpacity>
+      <PageHeader pageTitle={_getTitle()} />
+      <View style={styles.spacerSmall} />
 
-      {type == "PAID" ? (
-        <Text style={styles.title}>Pendências finalizadas</Text>
-      ) : (
-        <Text style={styles.title}>Minhas pendências financeiras</Text>
-      )}
-
-      {data.bills
-        .slice()
-        .sort((a, b) => b.id!! - a.id!!)
-        .filter((a) => a.status == type)
-        .map((bill) => (
-          <TouchableOpacity key={bill.id} style={styles.billCard}>
-            <MaterialIcons
-              name="attach-money"
-              size={30}
-              color="white"
-              style={
-                type == "PAID" ? styles.billIconPaid : styles.billIconPending
-              }
-            />
-
-            <View style={styles.billInfo}>
-              <Text style={styles.billDate}>{formatDate(bill.dueDate)}</Text>
-              <Text style={styles.billName}>{bill.name}</Text>
-            </View>
-
-            <Text style={styles.billValue}>R$ {bill.value?.toFixed(2)}</Text>
-          </TouchableOpacity>
+      <ScrollView style={styles.containerBills}>
+        {_filterBills(type!!).map((bill) => (
+          <BillCard bill={bill} key={bill.id} />
         ))}
-
-      <View style={{ height: 80 }} />
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  spacer: {
+    height: 80,
+  },
+  spacerSmall: {
+    height: 20,
+  },
   container: {
     backgroundColor: "#F6F8FA",
     flex: 1,
     paddingHorizontal: 20,
   },
-  title: {
-    textAlign: "left",
-    width: "100%",
-    fontSize: 26,
-    marginBottom: 20,
-    fontWeight: "bold",
-  },
-  loadingContainer: {
+  containerBills: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorMessage: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 20,
-  },
-  billCard: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    backgroundColor: "#fff",
-    marginVertical: 5,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  billIconPending: {
-    alignSelf: "center",
-    backgroundColor: "#f04646",
-    padding: 6,
-    borderRadius: 100,
-  },
-  billIconPaid: {
-    alignSelf: "center",
-    backgroundColor: "#23b065",
-    padding: 6,
-    borderRadius: 100,
-  },
-  billInfo: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    paddingLeft: 20,
-  },
-  billDate: {
-    fontSize: 14,
-    color: "#8f8d8d",
-    fontWeight: "500",
-  },
-  billName: {
-    fontSize: 16,
-    color: "#4a4a4a",
-    fontWeight: "500",
-  },
-  billValue: {
-    alignSelf: "center",
-    fontSize: 15,
-    color: "#8f8d8d",
-    fontWeight: "500",
-    paddingRight: 5,
   },
 });

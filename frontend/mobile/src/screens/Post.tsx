@@ -1,17 +1,12 @@
 import { useNavigation, type NavigationProp } from "@react-navigation/native";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
-import Ionicons from "@expo/vector-icons/Ionicons";
+
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import PostService from "../services/post-service";
 import { useEffect, useState } from "react";
 import { Post } from "../models/post";
+import LoadingComponent from "../components/loading-component";
+import PageHeader from "../components/page-header";
 
 export default function PostScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -20,10 +15,6 @@ export default function PostScreen() {
 
   const [post, setPost] = useState<Post>();
   const [errorMessage, setErrorMessage] = useState<string>();
-
-  const _goBack = () => {
-    navigation.goBack();
-  };
 
   const _handlerError = (error: any) => {
     if (error.isAxiosError) {
@@ -44,53 +35,44 @@ export default function PostScreen() {
       });
   };
 
+  const _renderPostContent = (content: string) => {
+    return content.split("\n").map((s, i) => {
+      if (s !== "\\n") {
+        if (s.startsWith("#")) {
+          return (
+            <Text key={i} style={styles.titleContent}>
+              {s.replace("#", "")}
+            </Text>
+          );
+        } else {
+          return (
+            <Text key={i} style={styles.textContent}>
+              {s}
+            </Text>
+          );
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     _getPost(id!!);
   }, [navigation]);
 
   if (post == null || id == null || id == undefined) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      </View>
-    );
+    return <LoadingComponent errorMessage={errorMessage} />;
   }
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ height: 80 }} />
-
-      <TouchableOpacity
-        style={{ alignSelf: "flex-start", marginBottom: 30 }}
-        onPress={_goBack}
-      >
-        <Ionicons name="chevron-back" size={24} color="black" />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>{post.title}</Text>
+      <View style={styles.spacer} />
+      <PageHeader pageTitle={post.title!!} />
+      
       <Text style={styles.description}>{post.description}</Text>
-
-      {post.content?.split("\n").map((s, i) => {
-        if (s != "\\n") {
-          if (s.startsWith("#")) {
-            return (
-              <Text key={i} style={styles.titleContent}>
-                {s.replace("#", "")}
-              </Text>
-            );
-          } else {
-            return (
-              <Text key={i} style={styles.textContent}>
-                {s}
-              </Text>
-            );
-          }
-        }
-      })}
-
+      {_renderPostContent(post.content!!)}
       <Text style={styles.author}>Fonte: {post.author}</Text>
-      <View style={{ height: 80 }} />
+      
+      <View style={styles.spacer} />
     </ScrollView>
   );
 }
@@ -101,27 +83,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
-  title: {
-    textAlign: "left",
-    width: "100%",
-    fontSize: 26,
-    fontWeight: "bold",
+  spacer: {
+    height: 80,
   },
   description: {
     fontSize: 15,
     textAlign: "justify",
     lineHeight: 25,
     marginVertical: 10,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorMessage: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 20,
   },
   titleContent: {
     fontSize: 20,
