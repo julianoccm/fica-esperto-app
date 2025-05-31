@@ -134,36 +134,51 @@ export default function HomeScreen() {
 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Minhas pendências financeiras</Text>
-
-          {_filterBills("PENDING", 0, 3).map((bill) => (
-            <BillCard bill={bill} key={bill.id} />
-          ))}
-
-          <TouchableOpacity
-            style={styles.endSectionLink}
-            onPress={_goToPendingBill}
-          >
-            <Text style={styles.endSectionLinkText}>
-              Ver todas as pendências.
+          {_filterBills("PENDING", 0, 3).length === 0 ? (
+            <Text style={styles.textNoPendencies}>
+              Nenhuma pendência encontrada, clique no + para cadastrar uma nova
+              pendência manualmente.
             </Text>
-          </TouchableOpacity>
+          ) : (
+            <>
+              {_filterBills("PENDING", 0, 3).map((bill) => (
+                <BillCard bill={bill} key={bill.id} />
+              ))}
+              <TouchableOpacity
+                style={styles.endSectionLink}
+                onPress={_goToPendingBill}
+              >
+                <Text style={styles.endSectionLinkText}>
+                  Ver todas as pendências.
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
 
           <Text style={[styles.sectionTitle, styles.sectionTitleMarginTop]}>
             Pendências finalizadas
           </Text>
 
-          {_filterBills("PAID", 0, 3).map((bill) => (
-            <BillCard bill={bill} key={bill.id} />
-          ))}
-
-          <TouchableOpacity
-            style={styles.endSectionLink}
-            onPress={_goToPaidBill}
-          >
-            <Text style={styles.endSectionLinkText}>
-              Ver todas as pendências finalizadas.
+          {_filterBills("PAID", 0, 3).length === 0 ? (
+            <Text style={styles.textNoPendencies}>
+              Nenhuma pendência encontrada, clique no + para cadastrar uma nova
+              pendência manualmente.
             </Text>
-          </TouchableOpacity>
+          ) : (
+            <>
+              {_filterBills("PAID", 0, 3).map((bill) => (
+                <BillCard bill={bill} key={bill.id} />
+              ))}
+              <TouchableOpacity
+                style={styles.endSectionLink}
+                onPress={_goToPaidBill}
+              >
+                <Text style={styles.endSectionLinkText}>
+                  Ver todas as pendências finalizadas.
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
         <View style={styles.spacer} />
       </ScrollView>
@@ -229,5 +244,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  textNoPendencies: {
+    color: "#888",
+    textAlign: "left",
+    marginBottom: 10,
   },
 });
