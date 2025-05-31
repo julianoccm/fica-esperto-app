@@ -25,12 +25,17 @@ export default function BillCard({ bill }: BillCardProps) {
         }
       />
 
-      <View style={styles.billInfo}>
-        <Text style={styles.billDate}>{formatDate(bill.dueDate)}</Text>
-        <Text style={styles.billName}>{bill.name}</Text>
-      </View>
+      <View style={styles.content}>
+        <View style={styles.billInfo}>
+          <Text style={styles.billDate}>{formatDate(bill.dueDate)}</Text>
+          <Text style={bill.origin == "SERASA" ? styles.billOriginSerasa : styles.billOriginManual}>{bill.origin}</Text>
+        </View>
 
-      <Text style={styles.billValue}>R$ {bill.value?.toFixed(2)}</Text>
+        <View style={styles.billInfo}>
+          <Text style={styles.billName}>{bill.name}</Text>
+          <Text style={styles.billValue}>R$ {bill.value?.toFixed(2)}</Text>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -45,8 +50,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginVertical: 5,
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     borderRadius: 10,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignContent: "center",
   },
   billIconPending: {
     alignSelf: "center",
@@ -62,25 +72,55 @@ const styles = StyleSheet.create({
   },
   billInfo: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignContent: "center",
-    paddingLeft: 20,
+    flexDirection: "row",
+    paddingLeft: 10,
   },
   billDate: {
     fontSize: 14,
     color: "#8f8d8d",
     fontWeight: "500",
+    alignSelf: "center",
   },
   billName: {
-    fontSize: 16,
+    fontSize: 20,
     color: "#4a4a4a",
-    fontWeight: "500",
+    fontWeight: "600",
+  },
+  billOriginSerasa: {
+    alignSelf: "flex-end",
+    fontSize: 8,
+    backgroundColor: "#f2aac9",
+    borderColor: "#E81570",
+    borderWidth: 2,
+    textAlign: "center",
+    borderRadius: 6,
+    color: "#E81570",
+    fontWeight: "bold",
+    marginRight: 15,
+    padding: 5,
+    marginBottom: 2
+  },
+  billOriginManual: {
+    alignSelf: "flex-end",
+    fontSize: 10,
+    backgroundColor: "#f2ecaa",
+    borderColor: "#b5a707",
+    borderWidth: 2,
+    textAlign: "center",
+    borderRadius: 6,
+    color: "#b5a707",
+    fontWeight: "bold",
+    marginRight: 15,
+    padding: 5,
+    marginBottom: 2
   },
   billValue: {
-    alignSelf: "center",
-    fontSize: 15,
+    alignSelf: "flex-end",
+    fontSize: 18,
     color: "#8f8d8d",
     fontWeight: "500",
-    paddingRight: 5,
+    paddingRight: 15,
   },
 });

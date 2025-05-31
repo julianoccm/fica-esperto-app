@@ -4,6 +4,7 @@ export class Bill {
   description?: string;
   value?: number;
   dueDate?: Date;
+  origin ?: string;
   status?: string;
   userId?: number;
 
@@ -20,6 +21,7 @@ export class Bill {
       dueDate: new Date(json.dueDate),
       status: json.status,
       userId: json.userId,
+      origin: json.origin
     });
   }
 
@@ -32,6 +34,7 @@ export class Bill {
       dueDate: this.dueDate?.toISOString(),
       status: this.status,
       userId: this.userId,
+      origin: this.origin
     };
   }
 }
