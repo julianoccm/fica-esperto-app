@@ -1,6 +1,7 @@
 package br.com.ficaespertoapp.backend.infrastructure.persistence.entity;
 
 import br.com.ficaespertoapp.backend.domain.dto.BillDTO;
+import br.com.ficaespertoapp.backend.domain.enums.BillOrigin;
 import br.com.ficaespertoapp.backend.domain.enums.BillStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
@@ -45,6 +46,10 @@ public class Bill {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BillStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BillOrigin origin;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

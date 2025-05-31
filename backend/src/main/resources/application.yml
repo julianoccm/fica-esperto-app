@@ -6,9 +6,17 @@ spring:
     username: ficaespertoapp
     password: ficaespertoapp
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+    show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      platform: mysql
 
 security:
   jwt:
