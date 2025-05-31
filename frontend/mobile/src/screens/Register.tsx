@@ -29,13 +29,19 @@ export default function RegisterScreen() {
   };
 
   const _register = async () => {
+    if (!name || !cpf || !email || !password || !birthDate) {
+      setErrorMessage("Por favor, preencha todos os campos.");
+      return;
+    }
+    setErrorMessage("");
+
     try {
       const registerResponse = await AuthService.register({
         name,
         cpf,
         email,
         password,
-        birthDate
+        birthDate,
       } as User);
 
       const authResponse = await AuthService.login({
@@ -44,11 +50,14 @@ export default function RegisterScreen() {
       } as Login);
 
       await AsyncStorage.setItem("token", authResponse.token!!);
-      await AsyncStorage.setItem("user", JSON.stringify(authResponse.user?.toJson()!!));
+      await AsyncStorage.setItem(
+        "user",
+        JSON.stringify(authResponse.user?.toJson()!!)
+      );
 
       navigation.navigate("Home");
     } catch (error: any) {
-       if (error.isAxiosError) {
+      if (error.isAxiosError) {
         console.log("Axios error message:", error.response.data);
         setErrorMessage(error.response.data);
       } else {
@@ -56,6 +65,36 @@ export default function RegisterScreen() {
         setErrorMessage("Ocorreu um erro ao fazer login.");
       }
     }
+  };
+
+  const _validateBirthDate = (text: string) => {
+    let cleaned = text.replace(/\D/g, "");
+
+    if (cleaned.length > 2 && cleaned.length <= 4) {
+      cleaned = cleaned.replace(/^(\d{2})(\d{1,2})/, "$1/$2");
+    } else if (cleaned.length > 4) {
+      cleaned = cleaned.replace(/^(\d{2})(\d{2})(\d{1,4})/, "$1/$2/$3");
+    }
+
+    setBirthDate(cleaned);
+  };
+
+  const _validateCpf = (text: string) => {
+    let cleaned = text.replace(/\D/g, "");
+    let masked = cleaned;
+
+    if (cleaned.length > 3 && cleaned.length <= 6) {
+      masked = cleaned.replace(/^(\d{3})(\d{1,3})/, "$1.$2");
+    } else if (cleaned.length > 6 && cleaned.length <= 9) {
+      masked = cleaned.replace(/^(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+    } else if (cleaned.length > 9) {
+      masked = cleaned.replace(
+        /^(\d{3})(\d{3})(\d{3})(\d{1,2})/,
+        "$1.$2.$3-$4"
+      );
+    }
+
+    setCpf(masked);
   };
 
   return (
@@ -84,7 +123,12 @@ export default function RegisterScreen() {
           style={styles.textInput}
           autoCapitalize="none"
           placeholder="Insira aqui seu CPF"
-          onChange={(e) => setCpf(e.nativeEvent.text)}
+          value={cpf}
+          keyboardType="numeric"
+          maxLength={14}
+          onChangeText={(text) => {
+            _validateCpf(text);
+          }}
           onFocus={(e) =>
             e.target.setNativeProps({ style: styles.formInputFucused })
           }
@@ -110,8 +154,11 @@ export default function RegisterScreen() {
           placeholder="Insira aqui sua data de nascimento"
           autoCapitalize="none"
           value={birthDate}
-          onChangeText={setBirthDate}
-          onChange={(e) => setPassword(e.nativeEvent.text)}
+          keyboardType="numeric"
+          maxLength={10}
+          onChangeText={(text) => {
+            _validateBirthDate(text);
+          }}
           onFocus={(e) =>
             e.target.setNativeProps({ style: styles.formInputFucused })
           }
