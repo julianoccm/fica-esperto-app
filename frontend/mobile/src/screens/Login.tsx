@@ -25,6 +25,12 @@ export default function LoginScreen() {
   };
 
   const _login = async () => {
+    if (!email || !password) {
+      setErrorMessage("Por favor, preencha todos os campos.");
+      return;
+    }
+    setErrorMessage("")
+
     try {
       const authResponse = await AuthService.login({
         email,
