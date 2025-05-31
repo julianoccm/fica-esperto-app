@@ -1,6 +1,7 @@
 package br.com.ficaespertoapp.backend.application;
 
 import br.com.ficaespertoapp.backend.domain.dto.BillDTO;
+import br.com.ficaespertoapp.backend.domain.enums.BillOrigin;
 import br.com.ficaespertoapp.backend.domain.enums.BillStatus;
 import br.com.ficaespertoapp.backend.domain.exception.BillException;
 import br.com.ficaespertoapp.backend.domain.service.BillService;
@@ -81,6 +82,7 @@ public class BillServiceImpl implements BillService {
         entity.setValue(bill.getValue());
         entity.setStatus(BillStatus.valueOf(bill.getStatus()));
         entity.setUser(optionalUser.get());
+        entity.setOrigin(BillOrigin.MANUAL);
 
         return billRepository.save(entity);
     }

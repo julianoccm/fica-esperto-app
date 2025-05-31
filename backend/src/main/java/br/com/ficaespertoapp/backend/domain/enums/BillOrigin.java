@@ -2,7 +2,7 @@ package br.com.ficaespertoapp.backend.domain.enums;
 
 public enum BillOrigin {
     SERASA("Serasa"),
-    MANUAL("Manul");
+    MANUAL("Manual");
 
     private final String description;
 
