@@ -21,6 +21,7 @@ import { User } from "../models/user";
 import BillCard from "../components/bill-card";
 import PostCard from "../components/post-card";
 import LoadingComponent from "../components/loading-component";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -90,10 +91,10 @@ export default function HomeScreen() {
     navigation.navigate("Bills", { id: data?.id, type: "PAID" });
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     _getPostData();
     _getUserData();
-  }, [navigation]);
+  });
 
   if (data == null || posts == null) {
     return <LoadingComponent errorMessage={errorMessage} />;

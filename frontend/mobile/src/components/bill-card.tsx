@@ -12,8 +12,12 @@ type BillCardProps = {
 export default function BillCard({ bill }: BillCardProps) {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
 
+  const _goToBill = () => {
+    navigation.navigate("BillInfo", { bill: bill });
+  };
+
   return (
-    <TouchableOpacity key={bill.id} style={styles.billCard}>
+    <TouchableOpacity key={bill.id} style={styles.billCard} onPress={_goToBill}>
       <MaterialIcons
         name="attach-money"
         size={30}
@@ -28,7 +32,15 @@ export default function BillCard({ bill }: BillCardProps) {
       <View style={styles.content}>
         <View style={styles.billInfo}>
           <Text style={styles.billDate}>{formatDate(bill.dueDate)}</Text>
-          <Text style={bill.origin == "SERASA" ? styles.billOriginSerasa : styles.billOriginManual}>{bill.origin}</Text>
+          <Text
+            style={
+              bill.origin == "SERASA"
+                ? styles.billOriginSerasa
+                : styles.billOriginManual
+            }
+          >
+            {bill.origin}
+          </Text>
         </View>
 
         <View style={styles.billInfo}>
@@ -75,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     flexDirection: "row",
-    paddingLeft: 10,
+    paddingLeft: 15,
   },
   billDate: {
     fontSize: 14,
@@ -100,7 +112,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 15,
     padding: 5,
-    marginBottom: 2
+    marginBottom: 2,
   },
   billOriginManual: {
     alignSelf: "flex-end",
@@ -114,7 +126,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 15,
     padding: 5,
-    marginBottom: 2
+    marginBottom: 2,
   },
   billValue: {
     alignSelf: "flex-end",

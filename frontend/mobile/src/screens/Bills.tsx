@@ -61,9 +61,9 @@ export default function BillsScreen() {
       : "Minhas pendências financeiras";
   };
 
-  useEffect(() => {
+  navigation.addListener("focus", () => {
     _getUserData();
-  }, [navigation]);
+  });
 
   if (id == null || data == null) {
     return <LoadingComponent errorMessage={errorMessage} />;
