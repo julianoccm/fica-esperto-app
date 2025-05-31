@@ -1,21 +1,8 @@
 import { useNavigation, type NavigationProp } from "@react-navigation/native";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
 
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { useEffect, useState } from "react";
-import type { UserData } from "../models/user-data";
-import UserService from "../services/user-service";
-import { User } from "../models/user";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import PageHeader from "../components/page-header";
-import LoadingComponent from "../components/loading-component";
-import BillCard from "../components/bill-card";
 import type { Bill } from "../models/bill";
 import { formatDate } from "../utils/date-utils";
 import BillService from "../services/bill-service";
