@@ -21,12 +21,12 @@ export default function BillInfoScreen() {
       BillService.pendeciateBill(bill?.id!!);
     }
 
-    navigation.navigate("Home");
+    navigation.goBack();
   };
 
   const _billDeleteAction = () => {
     BillService.deleteBill(bill?.id!!);
-    navigation.navigate("Home");
+    navigation.goBack();
   };
 
   return (

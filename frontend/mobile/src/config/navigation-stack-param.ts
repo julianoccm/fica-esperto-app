@@ -10,4 +10,5 @@ export type NavigationStackParamList = {
   Post: { id: number | undefined };
   Bills: { id: number | undefined, type: string | undefined};
   BillInfo: { bill: Bill | undefined };
+  CreateBill: undefined;
 };

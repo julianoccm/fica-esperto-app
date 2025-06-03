@@ -1,4 +1,4 @@
-import { useNavigation, type NavigationProp } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, type NavigationProp } from "@react-navigation/native";
 import type { NavigationStackParamList } from "../config/navigation-stack-param";
 
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -61,7 +61,7 @@ export default function BillsScreen() {
       : "Minhas pendências financeiras";
   };
 
-  navigation.addListener("focus", () => {
+  useFocusEffect(() => {
     _getUserData();
   });
 

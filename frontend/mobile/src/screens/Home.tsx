@@ -22,6 +22,7 @@ import BillCard from "../components/bill-card";
 import PostCard from "../components/post-card";
 import LoadingComponent from "../components/loading-component";
 import { useFocusEffect } from "@react-navigation/native";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -89,6 +90,10 @@ export default function HomeScreen() {
 
   const _goToPaidBill = () => {
     navigation.navigate("Bills", { id: data?.id, type: "PAID" });
+  };
+
+  const _goToCreateBill = () => {
+    navigation.navigate("CreateBill");
   };
 
   useFocusEffect(() => {
@@ -183,6 +188,9 @@ export default function HomeScreen() {
         </View>
         <View style={styles.spacer} />
       </ScrollView>
+      <TouchableOpacity style={styles.plusButton} onPress={_goToCreateBill}>
+        <AntDesign name="pluscircle" size={55} color="#3f36cf" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -250,5 +258,16 @@ const styles = StyleSheet.create({
     color: "#888",
     textAlign: "left",
     marginBottom: 10,
+  },
+  plusButton: {
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 40,
+    right: 40,
+    zIndex: 999999,
+    backgroundColor: "#fff",
+    borderRadius: 1000,
   },
 });
