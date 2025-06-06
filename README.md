@@ -3,8 +3,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" />
   <img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" />
-  <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" />
-  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
+  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37" />
   <img src="https://img.shields.io/badge/PostgreSQL-000?style=for-the-badge&logo=postgresql" />
 </p>
 
@@ -18,10 +18,10 @@ No qual seu objetivo é ser uma fonte de informações para que as pessoas possa
 que estão cada vez mais frequentes na sociedade.
 
 ## Sobre a Arquitetura do App
-- O sistema é composto com dois Frontends, uma versão Mobile e outra Web;
+- O sistema apresenta um frontend mobile desenvolvido com React Native (Expo);
 - Um mesmo Backend para ambos os Frontends, feito com o framework Spring;
 - Um banco de dados PostgreSQL.
 
 
 ### Diagrama da arquitetura
-![Diagrama arquitetura](https://github.com/user-attachments/assets/68754cc2-6015-447c-859c-b92193649856)
+![Diagrama sem nome drawio (1)](https://github.com/user-attachments/assets/6f8e9761-5a20-4622-88df-bb69e59a55e6)
