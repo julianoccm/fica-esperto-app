@@ -23,6 +23,7 @@ import PostCard from "../components/post-card";
 import LoadingComponent from "../components/loading-component";
 import { useFocusEffect } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import BillService from "../services/bill-service";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -50,6 +51,13 @@ export default function HomeScreen() {
         console.error("Error fetching posts data:", error);
         _handlerError(error);
       });
+  };
+
+  const _syncSerasa = () => {
+    BillService.syncSerasa().catch((error) => {
+      console.error("Error fetching sync serasa data:", error);
+      _handlerError(error);
+    });
   };
 
   const _getUserData = async () => {
@@ -187,10 +195,10 @@ export default function HomeScreen() {
           )}
         </View>
         <View style={styles.spacer} />
-        <TouchableOpacity style={styles.buttonForm} onPress={() => {}}>
+        <TouchableOpacity style={styles.buttonForm} onPress={_syncSerasa}>
           <Text style={styles.buttonFormText}>Buscar pendencias no Serasa</Text>
         </TouchableOpacity>
-               <View style={styles.spacer} />
+        <View style={styles.spacer} />
       </ScrollView>
       <TouchableOpacity style={styles.plusButton} onPress={_goToCreateBill}>
         <AntDesign name="pluscircle" size={55} color="#3f36cf" />

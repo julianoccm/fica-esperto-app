@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     flexDirection: "row",
-    paddingLeft: 15,
+    paddingLeft: 10,
   },
   billDate: {
     fontSize: 14,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   billName: {
-    fontSize: 18,
+    fontSize: 14,
     color: "#4a4a4a",
     fontWeight: "600",
   },

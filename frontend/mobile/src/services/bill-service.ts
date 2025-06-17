@@ -16,6 +16,25 @@ export default class BillService {
     return response;
   }
 
+  static async syncSerasa(): Promise<any> {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found in AsyncStorage");
+    }
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const userStorage = await AsyncStorage.getItem("user");
+    if(!userStorage) {
+      throw new Error("No user found in AsyncStorage");
+    }
+
+    const user = User.fromJson(JSON.parse(userStorage));
+
+    const response = await api.get<any>(`/bill/v1/sync/serasa/${user.id}`);
+    return response;
+  }
+
   static async pendeciateBill(id: number): Promise<any> {
     const token = await AsyncStorage.getItem("token");
     if (!token) {
