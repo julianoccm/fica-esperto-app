@@ -24,6 +24,7 @@ import LoadingComponent from "../components/loading-component";
 import { useFocusEffect } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import BillService from "../services/bill-service";
+import { Alert } from "react-native";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<NavigationStackParamList>>();
@@ -54,10 +55,32 @@ export default function HomeScreen() {
   };
 
   const _syncSerasa = () => {
-    BillService.syncSerasa().catch((error) => {
-      console.error("Error fetching sync serasa data:", error);
-      _handlerError(error);
-    });
+    if (!data?.cpf) {
+      setErrorMessage("CPF não encontrado para este usuário.");
+      return;
+    }
+    // Exibe um alerta antes de buscar no Serasa
+    // O Alert é nativo do React Native
+    Alert.alert(
+      "Buscar pendências no Serasa",
+      `Será utilizado o CPF ${data.cpf} para buscar pendências no Serasa. Deseja continuar?`,
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            BillService.syncSerasa()
+              .catch((error) => {
+                console.error("Error fetching sync serasa data:", error);
+                _handlerError(error);
+              });
+          },
+        },
+      ]
+    );
   };
 
   const _getUserData = async () => {
