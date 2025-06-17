@@ -26,6 +26,10 @@ que estão cada vez mais frequentes na sociedade.
 ### Diagrama da arquitetura
 ![Diagrama sem nome drawio (1)](https://github.com/user-attachments/assets/6f8e9761-5a20-4622-88df-bb69e59a55e6)
 
+### Diagrama do banco de dados
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/605624a4-cd82-4afe-b29a-fb16f5b2960b" height="500" />
+</p>
 
 ## Sobre o backend
 Dentro da pasta `/docs` contem a collection do Postman para realizar todas as chamadas para o backend Java, com os payloads e metodos esperados.
