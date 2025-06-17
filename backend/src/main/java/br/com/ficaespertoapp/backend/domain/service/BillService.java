@@ -11,6 +11,7 @@ public interface BillService {
     Bill pendingBill(Long id);
     Bill payBill(Long id);
     Bill save(Bill bill);
+    List<Bill> syncSerasa(Long userId);
     Bill saveDto(BillDTO bill);
     void deleteById(Long id);
 }

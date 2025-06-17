@@ -77,6 +77,16 @@ public class BillController {
         }
     }
 
+    @GetMapping("/sync/serasa/{userId}")
+    public ResponseEntity<?> syncSerasa(@PathVariable Long userId) {
+        try {
+            List<Bill> bills = billService.syncSerasa(userId);
+            return ResponseEntity.ok(bills);
+        } catch (Exception exception) {
+            return ResponseEntity.status(500).body(exception.getMessage());
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBill(@PathVariable Long id) {
         try {
