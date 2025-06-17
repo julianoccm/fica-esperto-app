@@ -187,6 +187,10 @@ export default function HomeScreen() {
           )}
         </View>
         <View style={styles.spacer} />
+        <TouchableOpacity style={styles.buttonForm} onPress={() => {}}>
+          <Text style={styles.buttonFormText}>Buscar pendencias no Serasa</Text>
+        </TouchableOpacity>
+               <View style={styles.spacer} />
       </ScrollView>
       <TouchableOpacity style={styles.plusButton} onPress={_goToCreateBill}>
         <AntDesign name="pluscircle" size={55} color="#3f36cf" />
@@ -269,5 +273,17 @@ const styles = StyleSheet.create({
     zIndex: 999999,
     backgroundColor: "#fff",
     borderRadius: 1000,
+  },
+  buttonForm: {
+    backgroundColor: "#E81570",
+    padding: 15,
+    width: "100%",
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  buttonFormText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

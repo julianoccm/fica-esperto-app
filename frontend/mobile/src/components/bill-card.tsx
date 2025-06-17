@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   billName: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#4a4a4a",
     fontWeight: "600",
   },
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   billValue: {
     alignSelf: "flex-end",
-    fontSize: 18,
+    fontSize: 14,
     color: "#8f8d8d",
     fontWeight: "500",
     paddingRight: 15,
